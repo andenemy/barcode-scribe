@@ -75,6 +75,10 @@ const Index = () => {
     setScannedItems(prev => [item, ...prev]);
   };
 
+  const handleImportItems = (importedItems: ScannedItem[]) => {
+    setScannedItems(prev => [...importedItems, ...prev]);
+  };
+
   const handleClearForm = () => {
     setCurrentBarcode(null);
   };
@@ -151,6 +155,7 @@ const Index = () => {
               items={scannedItems}
               customFields={customFields}
               onDeleteItem={handleDeleteItem}
+              onImportItems={handleImportItems}
             />
           </TabsContent>
 
