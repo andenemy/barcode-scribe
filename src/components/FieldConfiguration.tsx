@@ -19,7 +19,7 @@ export const FieldConfiguration = ({ customFields, onFieldsUpdate }: FieldConfig
   const [isConfiguring, setIsConfiguring] = useState(false);
   const [newField, setNewField] = useState({
     name: "",
-    type: "text" as "text" | "number" | "textarea",
+    type: "text" as "text" | "textarea",
     required: false,
   });
   const { toast } = useToast();
@@ -112,7 +112,7 @@ export const FieldConfiguration = ({ customFields, onFieldsUpdate }: FieldConfig
                   <Label>Field Type</Label>
                   <Select
                     value={newField.type}
-                    onValueChange={(value: "text" | "number" | "textarea") =>
+                    onValueChange={(value: "text" | "textarea") =>
                       setNewField({ ...newField, type: value })
                     }
                   >
@@ -121,7 +121,6 @@ export const FieldConfiguration = ({ customFields, onFieldsUpdate }: FieldConfig
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="text">Text</SelectItem>
-                      <SelectItem value="number">Number</SelectItem>
                       <SelectItem value="textarea">Textarea</SelectItem>
                     </SelectContent>
                   </Select>

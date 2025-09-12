@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 export interface CustomField {
   id: string;
   name: string;
-  type: "text" | "number" | "textarea";
+  type: "text" | "textarea";
   required: boolean;
 }
 
@@ -18,22 +18,22 @@ export interface ScannedItem {
   id: string;
   barcode: string;
   name: string;
-  description: string;
-  scannedAt: Date;
-  customFields: Record<string, string | number>;
+  description?: string;
+  scannedAt: string;
+  customFields?: Record<string, string>;
 }
 
 interface ItemFormProps {
   barcode: string | null;
   customFields: CustomField[];
-  onItemSaved: (item: ScannedItem) => void;
+  onItemSaved: (item: Omit<ScannedItem, 'id'>) => void;
   onClear: () => void;
 }
 
 export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFormProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [customFieldValues, setCustomFieldValues] = useState<Record<string, string | number>>({});
+  const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
   const { toast } = useToast();
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFo
     }
   }, [barcode]);
 
-  const handleCustomFieldChange = (fieldId: string, value: string | number) => {
+  const handleCustomFieldChange = (fieldId: string, value: string) => {
     setCustomFieldValues(prev => ({
       ...prev,
       [fieldId]: value
@@ -85,12 +85,11 @@ export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFo
       return;
     }
 
-    const newItem: ScannedItem = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    const newItem = {
       barcode,
       name: name.trim(),
       description: description.trim(),
-      scannedAt: new Date(),
+      scannedAt: new Date().toISOString(),
       customFields: customFieldValues,
     };
 
@@ -122,13 +121,12 @@ export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFo
             className="min-h-[80px]"
           />
         );
-      case "number":
+      case "text":
         return (
           <Input
             id={field.id}
-            type="number"
             value={value as string}
-            onChange={(e) => handleCustomFieldChange(field.id, parseFloat(e.target.value) || "")}
+            onChange={(e) => handleCustomFieldChange(field.id, e.target.value)}
             placeholder={`Enter ${field.name.toLowerCase()}...`}
           />
         );

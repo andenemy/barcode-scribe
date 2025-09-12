@@ -92,7 +92,7 @@ export const ItemList = ({ items, customFields, onDeleteItem, onImportItems }: I
             name: row.Name || "",
             description: row.Description || "",
             customFields: customFieldsData,
-            scannedAt: new Date(),
+            scannedAt: new Date().toISOString(),
           };
         }).filter(item => item.barcode && item.name); // Only import items with barcode and name
 

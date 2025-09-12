@@ -14,7 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      custom_fields: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          required: boolean
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          required?: boolean
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          required?: boolean
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scanned_items: {
+        Row: {
+          barcode: string
+          created_at: string
+          custom_fields: Json | null
+          description: string | null
+          id: string
+          name: string
+          scanned_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          barcode: string
+          created_at?: string
+          custom_fields?: Json | null
+          description?: string | null
+          id?: string
+          name: string
+          scanned_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          barcode?: string
+          created_at?: string
+          custom_fields?: Json | null
+          description?: string | null
+          id?: string
+          name?: string
+          scanned_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
