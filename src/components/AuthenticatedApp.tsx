@@ -3,6 +3,7 @@ import { BarcodeScanner } from "@/components/BarcodeScanner";
 import { ItemForm } from "@/components/ItemForm";
 import { ItemList } from "@/components/ItemList";
 import { FieldConfiguration } from "@/components/FieldConfiguration";
+import { InventorySummary } from "@/components/InventorySummary";
 import { AppSidebar } from "@/components/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { ScanBarcode } from "lucide-react";
@@ -72,13 +73,16 @@ export default function AuthenticatedApp() {
         );
       case "inventory":
         return (
-          <ItemList
-            items={items}
-            customFields={fields}
-            onDeleteItem={deleteItem}
-            onUpdateItem={updateItem}
-            onImportItems={(newItems) => importItems(newItems.map(({ id, ...item }) => item))}
-          />
+          <div className="space-y-6">
+            <InventorySummary items={items} />
+            <ItemList
+              items={items}
+              customFields={fields}
+              onDeleteItem={deleteItem}
+              onUpdateItem={updateItem}
+              onImportItems={(newItems) => importItems(newItems.map(({ id, ...item }) => item))}
+            />
+          </div>
         );
       case "settings":
         return (
