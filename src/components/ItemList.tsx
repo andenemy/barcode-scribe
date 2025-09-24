@@ -4,8 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Download, Package, Trash2, Upload } from "lucide-react";
+import { Search, Download, Package, Trash2, Upload, Edit } from "lucide-react";
 import { ScannedItem, CustomField } from "./ItemForm";
+import { EditItemDialog } from "./EditItemDialog";
 import * as XLSX from "xlsx";
 import { useToast } from "@/hooks/use-toast";
 
@@ -13,11 +14,13 @@ interface ItemListProps {
   items: ScannedItem[];
   customFields: CustomField[];
   onDeleteItem: (id: string) => void;
+  onUpdateItem: (id: string, updates: Partial<Omit<ScannedItem, 'id'>>) => void;
   onImportItems: (items: ScannedItem[]) => void;
 }
 
-export const ItemList = ({ items, customFields, onDeleteItem, onImportItems }: ItemListProps) => {
+export const ItemList = ({ items, customFields, onDeleteItem, onUpdateItem, onImportItems }: ItemListProps) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingItem, setEditingItem] = useState<ScannedItem | null>(null);
   const { toast } = useToast();
 
   const filteredItems = items.filter(item =>
@@ -188,7 +191,7 @@ export const ItemList = ({ items, customFields, onDeleteItem, onImportItems }: I
                     <TableHead key={field.id}>{field.name}</TableHead>
                   ))}
                   <TableHead>Scanned At</TableHead>
-                  <TableHead className="w-[100px]">Actions</TableHead>
+                  <TableHead className="w-[120px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -210,14 +213,24 @@ export const ItemList = ({ items, customFields, onDeleteItem, onImportItems }: I
                       {item.scannedAt.toLocaleString()}
                     </TableCell>
                     <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onDeleteItem(item.id)}
-                        className="text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      <div className="flex gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setEditingItem(item)}
+                          className="text-muted-foreground hover:text-foreground"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => onDeleteItem(item.id)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -226,6 +239,13 @@ export const ItemList = ({ items, customFields, onDeleteItem, onImportItems }: I
           </div>
         )}
       </CardContent>
+      
+      <EditItemDialog
+        item={editingItem}
+        customFields={customFields}
+        onSave={onUpdateItem}
+        onClose={() => setEditingItem(null)}
+      />
     </Card>
   );
 };

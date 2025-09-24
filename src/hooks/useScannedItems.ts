@@ -99,6 +99,48 @@ export function useScannedItems() {
     }
   };
 
+  const updateItem = async (id: string, updates: Partial<Omit<ScannedItem, 'id'>>) => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('scanned_items')
+        .update({
+          name: updates.name,
+          description: updates.description,
+          custom_fields: updates.customFields || {},
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const updatedItem: ScannedItem = {
+        id: data.id,
+        barcode: data.barcode,
+        name: data.name,
+        description: data.description || undefined,
+        scannedAt: data.scanned_at,
+        customFields: (data.custom_fields as Record<string, string>) || {}
+      };
+
+      setItems(prev => prev.map(item => item.id === id ? updatedItem : item));
+      
+      toast({
+        title: "Item updated",
+        description: "Item has been updated in your inventory.",
+      });
+    } catch (error: any) {
+      console.error('Error updating item:', error);
+      toast({
+        title: "Error updating item",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const deleteItem = async (id: string) => {
     if (!user) return;
 
@@ -179,6 +221,7 @@ export function useScannedItems() {
     items,
     loading,
     saveItem,
+    updateItem,
     deleteItem,
     importItems,
     refetch: loadItems

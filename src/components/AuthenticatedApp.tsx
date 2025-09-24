@@ -15,7 +15,7 @@ export default function AuthenticatedApp() {
   const [currentBarcode, setCurrentBarcode] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("scan");
   const { user } = useAuth();
-  const { items, saveItem, deleteItem, importItems } = useScannedItems();
+  const { items, saveItem, updateItem, deleteItem, importItems } = useScannedItems();
   const { fields, updateFields } = useCustomFields();
 
   const handleBarcodeScanned = (barcode: string) => {
@@ -76,6 +76,7 @@ export default function AuthenticatedApp() {
             items={items}
             customFields={fields}
             onDeleteItem={deleteItem}
+            onUpdateItem={updateItem}
             onImportItems={(newItems) => importItems(newItems.map(({ id, ...item }) => item))}
           />
         );
