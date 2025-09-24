@@ -45,6 +45,7 @@ export const ItemList = ({ items, customFields, onDeleteItem, onUpdateItem, onIm
         Name: item.name,
         Description: item.description,
         "Scanned At": item.scannedAt.toLocaleString(),
+        "Last Updated": item.updatedAt ? new Date(item.updatedAt).toLocaleString() : "",
       };
 
       // Add custom fields
@@ -191,6 +192,7 @@ export const ItemList = ({ items, customFields, onDeleteItem, onUpdateItem, onIm
                     <TableHead key={field.id}>{field.name}</TableHead>
                   ))}
                   <TableHead>Scanned At</TableHead>
+                  <TableHead>Last Updated</TableHead>
                   <TableHead className="w-[120px]">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -211,6 +213,9 @@ export const ItemList = ({ items, customFields, onDeleteItem, onUpdateItem, onIm
                     ))}
                     <TableCell className="text-sm text-muted-foreground">
                       {item.scannedAt.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {item.updatedAt ? new Date(item.updatedAt).toLocaleString() : "-"}
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">

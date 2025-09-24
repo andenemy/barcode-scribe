@@ -20,6 +20,7 @@ export interface ScannedItem {
   name: string;
   description?: string;
   scannedAt: string;
+  updatedAt?: string;
   customFields?: Record<string, string>;
 }
 

@@ -9,6 +9,7 @@ export interface ScannedItem {
   name: string;
   description?: string;
   scannedAt: string;
+  updatedAt?: string;
   customFields?: Record<string, string>;
 }
 
@@ -39,6 +40,7 @@ export function useScannedItems() {
         name: item.name,
         description: item.description || undefined,
         scannedAt: item.scanned_at,
+        updatedAt: item.updated_at,
         customFields: (item.custom_fields as Record<string, string>) || {}
       }));
 
@@ -80,6 +82,7 @@ export function useScannedItems() {
         name: data.name,
         description: data.description || undefined,
         scannedAt: data.scanned_at,
+        updatedAt: data.updated_at,
         customFields: (data.custom_fields as Record<string, string>) || {}
       };
 
@@ -122,6 +125,7 @@ export function useScannedItems() {
         name: data.name,
         description: data.description || undefined,
         scannedAt: data.scanned_at,
+        updatedAt: data.updated_at,
         customFields: (data.custom_fields as Record<string, string>) || {}
       };
 
@@ -194,6 +198,7 @@ export function useScannedItems() {
         name: item.name,
         description: item.description || undefined,
         scannedAt: item.scanned_at,
+        updatedAt: item.updated_at,
         customFields: (item.custom_fields as Record<string, string>) || {}
       }));
 
