@@ -28,9 +28,10 @@ export default function AuthenticatedApp() {
     name: string;
     description?: string;
     scannedAt: string;
+    category?: string;
     customFields?: Record<string, string>;
   }) => {
-    await saveItem(itemData);
+    await saveItem({ ...itemData, category: itemData.category || 'Uncategorized' });
   };
 
   const handleClearForm = () => {
@@ -80,7 +81,7 @@ export default function AuthenticatedApp() {
               customFields={fields}
               onDeleteItem={deleteItem}
               onUpdateItem={updateItem}
-              onImportItems={(newItems) => importItems(newItems.map(({ id, ...item }) => item))}
+              onImportItems={(newItems) => importItems(newItems.map(({ id, updatedAt, ...item }) => ({ ...item, category: 'Uncategorized' })))}
             />
           </div>
         );

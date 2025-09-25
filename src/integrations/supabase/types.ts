@@ -47,6 +47,7 @@ export type Database = {
       scanned_items: {
         Row: {
           barcode: string
+          category: string | null
           created_at: string
           custom_fields: Json | null
           description: string | null
@@ -58,6 +59,7 @@ export type Database = {
         }
         Insert: {
           barcode: string
+          category?: string | null
           created_at?: string
           custom_fields?: Json | null
           description?: string | null
@@ -69,6 +71,7 @@ export type Database = {
         }
         Update: {
           barcode?: string
+          category?: string | null
           created_at?: string
           custom_fields?: Json | null
           description?: string | null

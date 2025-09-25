@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Package, Plus, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -21,6 +22,7 @@ export interface ScannedItem {
   description?: string;
   scannedAt: string;
   updatedAt?: string;
+  category: string;
   customFields?: Record<string, string>;
 }
 
@@ -34,6 +36,7 @@ interface ItemFormProps {
 export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFormProps) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("Uncategorized");
   const [customFieldValues, setCustomFieldValues] = useState<Record<string, string>>({});
   const { toast } = useToast();
 
@@ -42,6 +45,7 @@ export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFo
       // Clear form when new barcode is scanned
       setName("");
       setDescription("");
+      setCategory("Uncategorized");
       setCustomFieldValues({});
     }
   }, [barcode]);
@@ -90,6 +94,7 @@ export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFo
       barcode,
       name: name.trim(),
       description: description.trim(),
+      category: category.trim(),
       scannedAt: new Date().toISOString(),
       customFields: customFieldValues,
     };
@@ -104,6 +109,7 @@ export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFo
     // Clear form
     setName("");
     setDescription("");
+    setCategory("Uncategorized");
     setCustomFieldValues({});
     onClear();
   };
@@ -191,6 +197,27 @@ export const ItemForm = ({ barcode, customFields, onItemSaved, onClear }: ItemFo
               placeholder="Enter description..."
             />
           </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="category">Category</Label>
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Electronics">Electronics</SelectItem>
+                <SelectItem value="Office Supplies">Office Supplies</SelectItem>
+                <SelectItem value="Finished Goods">Finished Goods</SelectItem>
+                <SelectItem value="Raw Materials">Raw Materials</SelectItem>
+                <SelectItem value="Tools & Equipment">Tools & Equipment</SelectItem>
+                <SelectItem value="Consumables">Consumables</SelectItem>
+                <SelectItem value="Uncategorized">Uncategorized</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div></div>
         </div>
 
         {customFields.length > 0 && (

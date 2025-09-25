@@ -10,6 +10,7 @@ export interface ScannedItem {
   description?: string;
   scannedAt: string;
   updatedAt?: string;
+  category: string;
   customFields?: Record<string, string>;
 }
 
@@ -41,6 +42,7 @@ export function useScannedItems() {
         description: item.description || undefined,
         scannedAt: item.scanned_at,
         updatedAt: item.updated_at,
+        category: item.category || 'Uncategorized',
         customFields: (item.custom_fields as Record<string, string>) || {}
       }));
 
@@ -57,7 +59,7 @@ export function useScannedItems() {
     }
   };
 
-  const saveItem = async (item: Omit<ScannedItem, 'id'>) => {
+  const saveItem = async (item: Omit<ScannedItem, 'id' | 'updatedAt'>) => {
     if (!user) return;
 
     try {
@@ -68,6 +70,7 @@ export function useScannedItems() {
           barcode: item.barcode,
           name: item.name,
           description: item.description,
+          category: item.category || 'Uncategorized',
           custom_fields: item.customFields || {},
           scanned_at: item.scannedAt
         })
@@ -83,6 +86,7 @@ export function useScannedItems() {
         description: data.description || undefined,
         scannedAt: data.scanned_at,
         updatedAt: data.updated_at,
+        category: data.category || 'Uncategorized',
         customFields: (data.custom_fields as Record<string, string>) || {}
       };
 
@@ -102,7 +106,7 @@ export function useScannedItems() {
     }
   };
 
-  const updateItem = async (id: string, updates: Partial<Omit<ScannedItem, 'id'>>) => {
+  const updateItem = async (id: string, updates: Partial<Omit<ScannedItem, 'id' | 'updatedAt'>>) => {
     if (!user) return;
 
     try {
@@ -111,6 +115,7 @@ export function useScannedItems() {
         .update({
           name: updates.name,
           description: updates.description,
+          category: updates.category,
           custom_fields: updates.customFields || {},
         })
         .eq('id', id)
@@ -126,6 +131,7 @@ export function useScannedItems() {
         description: data.description || undefined,
         scannedAt: data.scanned_at,
         updatedAt: data.updated_at,
+        category: data.category || 'Uncategorized',
         customFields: (data.custom_fields as Record<string, string>) || {}
       };
 
@@ -172,7 +178,7 @@ export function useScannedItems() {
     }
   };
 
-  const importItems = async (newItems: Omit<ScannedItem, 'id'>[]) => {
+  const importItems = async (newItems: Omit<ScannedItem, 'id' | 'updatedAt'>[]) => {
     if (!user || newItems.length === 0) return;
 
     try {
@@ -181,6 +187,7 @@ export function useScannedItems() {
         barcode: item.barcode,
         name: item.name,
         description: item.description,
+        category: item.category || 'Uncategorized',
         custom_fields: item.customFields || {},
         scanned_at: item.scannedAt
       }));
@@ -199,6 +206,7 @@ export function useScannedItems() {
         description: item.description || undefined,
         scannedAt: item.scanned_at,
         updatedAt: item.updated_at,
+        category: item.category || 'Uncategorized',
         customFields: (item.custom_fields as Record<string, string>) || {}
       }));
 
